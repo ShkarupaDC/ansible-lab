@@ -2,8 +2,10 @@
 # these are the variables which apply to every host in this playbook
 packages:
   - nginx
-  - openjdk-11-jre
-aptcachetime: 3600
+  - jre11-openjdk
+pacman_cache_time: 3600
+app_download_url: https://storage.googleapis.com/devops-practice-files/systemd/ServicesLab-0.0.1.jar
 app_dir: /opt/sample
 app_file: service.jar
 app_port: 8080
+app_service: sample.service

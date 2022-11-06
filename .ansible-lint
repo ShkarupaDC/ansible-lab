@@ -7,3 +7,7 @@ exclude_paths:
 
 warn_list:
   - role-name
+
+skip_list:
+  - name[template]
+  - command-instead-of-module

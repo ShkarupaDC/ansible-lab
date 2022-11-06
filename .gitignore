@@ -137,3 +137,6 @@ collections/
 
 # Vagrant
 .vagrant/
+
+# IDE
+.vscode

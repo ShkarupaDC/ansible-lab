@@ -4,24 +4,30 @@
   become: true
   tasks:
     - name: Remove packages
-      apt:
-        name: "{{ item }}"
+      community.general.pacman:
+        name: "{{ packages }}"
         state: absent
-      loop: "{{ packages }}"
-    - name: Stop sample.service
+
+    - name: Stop {{ app_service }}
       ansible.builtin.systemd:
-        name: sample.service
+        name: "{{ app_service }}"
         state: stopped
-        enabled: no
-    - name: Remove sample.service
+        enabled: false
+
+    - name: Remove {{ app_service }}
       ansible.builtin.file:
-        path: /etc/systemd/system/sample.service
+        path: /etc/systemd/system/{{ app_service }}
         state: absent
+
     - name: Reload Systemd
       ansible.builtin.systemd:
-        daemon_reload: yes
-    - name: Force delete Unit
-      ansible.builtin.shell: systemctl reset-failed
+        daemon_reload: true
+
+    - name: Force delete unit
+      ansible.builtin.command: systemctl reset-failed {{ app_service }}
+      register: reset_failed
+      changed_when: "reset_failed.rc == 0"
+
     - name: Remove {{ app_dir }}/{{ app_file }}
       ansible.builtin.file:
         path: "{{ app_dir }}/{{ app_file }}"
